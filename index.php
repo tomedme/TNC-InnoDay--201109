@@ -11,7 +11,7 @@
     Here goes the Map
   </section>
   <section>
-    Here goes the Object
+    <svg src="stats-categories.svg" width="800" height="80" />
   </section>
 </body>
 </html>
