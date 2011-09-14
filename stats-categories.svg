@@ -1,21 +1,25 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
   <title>playing with SVG</title>
   <desc>Just playing around</desc>
-  <rect id="container"                x="0" y="0" width="800" height="80" fill="#ddd" stroke="#000" />
-  <rect id="category-bars"            x="0" y="0" width="600" height="80" fill="#500" onclick="changeWidth(evt)" />
-  <rect id="category-transportation"  x="600" y="0" width="150" height="80" fill="#a00" />
-  <rect id="category-shopping"        x="750" y="0" width="50" height="80" fill="#f00" />
 
-  <script>
-  <![CDATA[
-    function changeWidth(evt) {
-      var t = evt.target;
-      var currentWidth = t.getAttribute("width");
-      if (currentWidth == 300)
-        t.setAttribute("width", currentWidth*2);
-      else
-        t.setAttribute("width", currentWidth*0.5);
-    }
-  ]]>
-  </script>
+  <defs>
+    <filter id="drop-shadow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+    </filter>
+  </defs>
+
+  <g id="container" x="0" y="0" width="100%" height="100%" fill="#ddd" stroke="#000" onclick="changeWidth(evt)" filter="url(#drop-shadow)">
+    <rect id="category-bars"            x="0" y="0" width="75%" height="100%" fill="#500">
+      <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="5%" />
+      <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="75%" />
+    </rect>
+    <rect id="category-transportation"  x="75%" y="0" width="10%" height="100%" fill="#a00">
+      <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="1%" />
+      <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="10%" />
+    </rect>
+    <rect id="category-shopping"        x="85%" y="0" width="15%" height="100%" fill="#f00">
+      <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="1%" />
+      <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="15%" />
+    </rect>
+  </g>
 </svg>
