@@ -1,4 +1,21 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <circle cx="100" cy="100" r="30" fill="blue" stroke="red"/>
-  <rect x="10" y="10" width="80" height="40" fill="yellow" stroke="black"/>
+  <title>playing with SVG</title>
+  <desc>Just playing around</desc>
+  <rect id="container"                x="0" y="0" width="800" height="80" fill="#ddd" stroke="#000" />
+  <rect id="category-bars"            x="0" y="0" width="600" height="80" fill="#500" onclick="changeWidth(evt)" />
+  <rect id="category-transportation"  x="600" y="0" width="150" height="80" fill="#a00" />
+  <rect id="category-shopping"        x="750" y="0" width="50" height="80" fill="#f00" />
+
+  <script>
+  <![CDATA[
+    function changeWidth(evt) {
+      var t = evt.target;
+      var currentWidth = t.getAttribute("width");
+      if (currentWidth == 300)
+        t.setAttribute("width", currentWidth*2);
+      else
+        t.setAttribute("width", currentWidth*0.5);
+    }
+  ]]>
+  </script>
 </svg>
