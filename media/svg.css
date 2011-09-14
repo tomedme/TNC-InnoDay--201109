@@ -1,21 +1,5 @@
-/* this is not used for now
-#container {
-  fill: #ddd;
-  stroke: solid #000 1px;
-}
-
-#category-bars {
-  fill: #500;
-  stroke: solid #000 1px;
-}
-
-#category-transportation {
-  fill: #a00;
-  stroke: solid #000 1px;
-}
-
+#category-bars,
+#category-transportation,
 #category-shopping {
-  fill: #f00;
-  stroke: solid #000 1px;
+  stroke: none;
 }
-*/
