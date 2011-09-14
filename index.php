@@ -7,7 +7,10 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript" src="/media/gmap.js"></script>
-  <script type="text/javascript">var foursq_client_id = '<?php echo trim(file_get_contents('foursq_client_id.txt')); ?>';</script>
+  <script type="text/javascript">var foursq_client_id = '<?php 
+    if ('fabien.tnc.lab' == $_SERVER['HTTP_HOST']) echo 'A4GUAUX0GIE5S5WH1AZJX3MQLSSGUVW2OUYB5CHDRNYOA4NG';
+    if ('4sq.tedme.kaufmich.lab' == $_SERVER['HTTP_HOST']) echo 'DJESXBRMCPFMPFXWQVPMXSWHZNNC33KIOWLOMIWN4LDXJCU4';
+  ?>';</script>
   <script type="text/javascript" src="/media/4sq.js"></script>
   <script type="text/javascript" src="/media/app.js"></script>
 </head>
