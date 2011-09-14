@@ -7,9 +7,9 @@
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-  <script src="/media/gmap.js"></script>
-  <script src="/media/4sq.js"></script>
-  <script src="/media/app.js"></script>
+  <script type="text/javascript" src="/media/gmap.js"></script>
+  <script type="text/javascript" src="/media/4sq.js"></script>
+  <script type="text/javascript" src="/media/app.js"></script>
 </head>
 
 <body>
