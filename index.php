@@ -16,7 +16,9 @@
     Here goes the Map
   </section>
   <section>
-    <svg src="stats-categories.svg" width="800" height="80" />
+    <object id="stats" type="image/svg+xml" data="stats-categories.svg" width="800" height="80">
+      Your browser doesn't seem to support SVG (or else, you wouldn't see that message).
+    </object>
   </section>
 </body>
 </html>
