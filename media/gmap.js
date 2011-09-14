@@ -47,14 +47,18 @@ var gmap = {
 			// this.map.mapTypes.set('wit', witStyledMapType);
 			// this.map.setMapTypeId('wit');
 			
-			/* var location = new google.maps.Marker({
+			var checkin = new google.maps.Marker({
 				position: this.latlng,
 				map: this.map,
-				icon: this.marker_icon
-      }); */
+				icon: null // this.marker_icon
+      });
 
 		}
 		
+	},
+	
+	goToCheckin: function (coords) {
+	  
 	}
 	
 };

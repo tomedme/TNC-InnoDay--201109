@@ -13,7 +13,7 @@
 
 <body>
   <section id="gmap">
-    Here goes the Map
+    Loading...
   </section>
   <section id="svg">
     <object id="stats" type="image/svg+xml" data="stats-categories.svg" width="800" height="80">

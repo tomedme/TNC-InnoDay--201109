@@ -2,13 +2,15 @@
 $(window).ready(function () {
   
   // do stuff
-  var go = foursq.init();
-  
-  // if (go) {
-    gmap.init({ lat: 31.2, lng: 121.5 });
-  
+  if (foursq.init()) {
+    gmap.init(foursq.getFirstCheckin());
     // setup svg box in the right place
-    $('#svg').css({ left: ($('#'+ gmap.map_dom_id).width() / 2) - 400 + 'px', bottom: '20px' }).show();
-  // }
+    $('#svg').css({ left: (($('#'+ gmap.map_dom_id).width() / 2) - 400) + 'px', bottom: '20px' }).show();
+    // go through checkins
+    foursq.run();
+  }
+  else {
+    alert('Couldn\'t load data...');
+  }
   
 });
