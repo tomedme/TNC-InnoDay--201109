@@ -1,0 +1,26 @@
+
+html {
+  height: auto;
+}
+
+body {
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+#gmap {
+  bottom: 0;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 5;
+}
+
+#svg {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}

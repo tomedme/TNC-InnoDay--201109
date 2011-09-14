@@ -9,7 +9,7 @@ var gmap = {
 	markers: {},
 	
 	map: null,
-	map_dom_id: 'wit',
+	map_dom_id: 'gmap',
 	
 	marker_icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=t|ffffff|000000',
 	
@@ -35,7 +35,7 @@ var gmap = {
 				zoom: this.zoom,
 				center: this.latlng,
 				backgroundColor: 'white',
-				// mapTypeId: google.maps.MapTypeId.ROADMAP,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
 				navigationControlOptions: {
 					style: google.maps.NavigationControlStyle.ZOOM_PAN,
