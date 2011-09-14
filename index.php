@@ -8,7 +8,7 @@
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
   <script type="text/javascript" src="media/gmap.js"></script>
-  <script type="text/javascript">var foursq_client_id = '<?php echo trim(file_get_contents('foursq_client_id.txt')); ?>';</script><script type="text/javascript">var foursq_client_id = '<?php 
+  <script type="text/javascript">var foursq_client_id = '<?php echo trim(file_get_contents('foursq_client_id.txt')); ?>';</script><script type="text/javascript">var foursq_client_id = '<?php
     if ('fabien.tnc.lab' == $_SERVER['HTTP_HOST']) echo 'A4GUAUX0GIE5S5WH1AZJX3MQLSSGUVW2OUYB5CHDRNYOA4NG';
     if ('4sq.tedme.kaufmich.lab' == $_SERVER['HTTP_HOST']) echo 'DJESXBRMCPFMPFXWQVPMXSWHZNNC33KIOWLOMIWN4LDXJCU4';
   ?>';</script>
@@ -30,7 +30,7 @@
     (function(){
 
       var target = $('#category-bars');
-      alert(target);
+//      alert(target);
       // create the <animation> element
       var animation = document.createElementNS(
       'http://www.w3.org/2000/svg', 'animate');
