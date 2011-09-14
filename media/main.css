@@ -1,27 +1,20 @@
 
-html {
-  font: italic 16px/1.5 Georgia, serif;
-  height: auto;
-}
-
+html,
 body {
-  height: auto;
-  margin: 0;
-  padding: 0;
+  min-height: 100%;
+  font: italic 16px/1.5 Georgia, serif;
 }
-
-#gmap {
-  bottom: 0;
-  height: auto;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 5;
-}
-
-#svg {
-  display: none;
-  position: absolute;
-  z-index: 10;
-}
+    #gmap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 60px; /* this matches the height of the bar stats */
+      left: 0;
+    }
+    #svg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+    }

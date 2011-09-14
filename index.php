@@ -22,10 +22,10 @@
 
 <body>
   <section id="gmap">
-    Loading...
+    Loading…
   </section>
-  <section id="svg">
-    <object id="stats" type="image/svg+xml" data="stats-categories.svg" width="800" height="80">
+  <section id="stats">
+    <object id="svg" type="image/svg+xml" data="stats-categories.svg">
       Your browser doesn't seem to support SVG (or else, you wouldn't see that message).
     </object>
   </section>
