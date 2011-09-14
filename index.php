@@ -7,6 +7,7 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript" src="/media/gmap.js"></script>
+  <script type="text/javascript">var foursq_client_id = '<?php echo trim(file_get_contents('foursq_client_id.txt')); ?>';</script>
   <script type="text/javascript" src="/media/4sq.js"></script>
   <script type="text/javascript" src="/media/app.js"></script>
 </head>

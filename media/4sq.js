@@ -1,10 +1,10 @@
 
 var foursq = {
   
-  client_id: 'DJESXBRMCPFMPFXWQVPMXSWHZNNC33KIOWLOMIWN4LDXJCU4',
+  client_id: foursq_client_id,
   auth_url: 'https://foursquare.com/oauth2/authenticate',
   redir_url: 'http://4sq.tedme.kaufmich.lab/index.php',
-  // endpoint_url: 'https://api.foursquare.com/v2/',
+  endpoint_url: 'https://api.foursquare.com/v2/users/self',
   
   atoken: null,
   
@@ -34,11 +34,18 @@ var foursq = {
   getData: function () {
     var self = this;
     $.ajaxSetup({ async: false, dataType: 'json' });
-    $.get('https://api.foursquare.com/v2/users/self?oauth_token=' + this.atoken, null, 
+    $.get(this.endpoint_url + '?oauth_token=' + this.atoken, null, 
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
-    $.get('https://api.foursquare.com/v2/users/self/checkins?limit=250&oauth_token=' + this.atoken, null, 
+    $.get(this.endpoint_url + '/checkins?limit=250&oauth_token=' + this.atoken, null, 
       function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; }});
     return (self.user && self.checkins);
+  },
+  
+  getFirstCheckin: function () {
+    return { lat: 31.2, lng: 121.5 };
+  },
+  
+  run: function () {
   }
   
 };
