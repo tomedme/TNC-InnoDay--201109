@@ -7,7 +7,7 @@ var foursq = {
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
   climit: 250,
   cmax: 15,
-  frequency: 1000,
+  frequency: 2500,
 
   atoken: null,
 
