@@ -7,6 +7,8 @@ var gmap = {
 	zoom: 10,
 	
 	infowindow: null,
+	poly: null,
+	polyoptions: { strokeColor: '#000000', strokeOpacity: 0.5, strokeWeight: 5 },
 	points: [],
 	
 	map: null,
@@ -55,6 +57,8 @@ var gmap = {
       }); */
       
       this.infowindow = new google.maps.InfoWindow();
+      this.poly = new google.maps.Polyline(this.polyoptions);
+      this.poly.setMap(this.map);
 
 		}
 		
@@ -67,6 +71,9 @@ var gmap = {
 	  this.infowindow.setPosition(latlng);
 	  this.infowindow.open(this.map);
 	  this.map.panTo(latlng);
+	  
+	  var path = this.poly.getPath();
+	  path.push(latlng);
 	}
 	
 };
