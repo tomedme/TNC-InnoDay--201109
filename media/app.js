@@ -1,6 +1,6 @@
 
 $(window).ready(function () {
-
+  
   // do stuff
   if (foursq.init()) {
     gmap.init(foursq.getFirstCheckin());

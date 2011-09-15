@@ -53,7 +53,7 @@ var foursq = {
   },
 
   run: function () {
-    this.timer = setInterval(function() { foursq.next(); }, 2500); // 00
+    this.timer = setInterval(function() { foursq.next(); }, 1500); // 00
   },
   
   next: function () {
