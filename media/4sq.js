@@ -65,7 +65,7 @@ var foursq = {
   },
   
   seek: function (i) {
-    checkin = this.checkins.items[i]; console.log(checkin);
+    checkin = this.checkins.items[i];
     // console.log(checkin.venue.name);
     if (checkin) gmap.goToCheckin(checkin.venue.location, checkin.venue.name);
     this.current--;
