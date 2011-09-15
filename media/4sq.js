@@ -7,7 +7,7 @@ var foursq = {
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
   climit: 250,
   cmax: 15,
-  frequency: 2000,
+  frequency: 1000,
 
   atoken: null,
 
@@ -118,11 +118,11 @@ var foursq = {
       percent = 100 * counters[id]/counters['global'];
       $(categories[i]).attr('width', percent +"%");
 
-      console.log($(categories[i]).width());
-
-      if($(categories[i]).width < 32) {
-
+      // remove the label if it doesn't fit anymore
+      if(categories[i].getBBox().width <= 32) {
+        $(categories[i]).children('line, image').attr('opacity', 0);
       }
+      else $(categories[i]).children('line, image').attr('opacity', 1);
 
       previousCategoryWidth = i == 0 ? 0 : $(categories[i]).prev().attr('width').replace('%','');
       previousCategoryX     = i == 0 ? 0 : $(categories[i]).prev().attr('x').replace('%','');
