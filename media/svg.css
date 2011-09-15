@@ -1,5 +1,14 @@
-#category-bars,
-#category-transportation,
-#category-shopping {
-  stroke: none;
+#svg {
+  fill: 0;
+  opacity: .9;
 }
+  #category-bars,
+  #category-transportation,
+  #category-shopping {
+    stroke: none;
+  }
+
+  .marker {
+    stroke: #000;
+    width: 3px;
+  }
