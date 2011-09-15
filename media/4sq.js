@@ -6,12 +6,14 @@ var foursq = {
   redir_url: 'http://' + foursq_redir_url,
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
   climit: 250,
+  cmax: 10,
 
   atoken: null,
 
   user: false,
   checkins: false,
   
+  timer: null,
   current: 0,
 
   init: function () {
@@ -40,32 +42,32 @@ var foursq = {
     $.get(this.endpoint_url + '?oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
     $.get(this.endpoint_url + '/checkins?limit=' + this.climit + '&oauth_token=' + this.atoken, null,
-      function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; }});
+      function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.count }});
     return (self.user && self.checkins);
   },
 
   getFirstCheckin: function () {
-    return { lat: 31.2, lng: 121.5 };
+    checkin = this.checkins.items[this.cmax - 1];
+    this.current = this.cmax;
+    return checkin.venue.location;
   },
 
   run: function () {
-    setInterval(function() { foursq.next(); }, 3000); // 00
+    this.timer = setInterval(function() { foursq.next(); }, 2500); // 00
   },
   
   next: function () {
     if (this.current - 1 < 0) {
-      this.current = 150; // this.checkins.count; console.log(this.current);
+      // this.current = this.cmax; // this.checkins.count; console.log(this.current);
+      clearInterval(this.timer);
     }
     this.seek(this.current - 1);
   },
   
   seek: function (i) {
-    checkin = this.checkins.items[i];
-    
-    // console.log(checkin.venue.location);
-    gmap.goToCheckin(checkin.venue.location);
-    
-    
+    checkin = this.checkins.items[i]; console.log(checkin);
+    // console.log(checkin.venue.name);
+    if (checkin) gmap.goToCheckin(checkin.venue.location, checkin.venue.name);
     this.current--;
   }
 

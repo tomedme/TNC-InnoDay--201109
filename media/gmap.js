@@ -6,7 +6,8 @@ var gmap = {
 	latlng: null,
 	zoom: 10,
 	
-	markers: {},
+	infowindow: null,
+	points: [],
 	
 	map: null,
 	map_dom_id: 'gmap',
@@ -47,19 +48,24 @@ var gmap = {
 			this.map.mapTypes.set('s4s', s4sStyledMapType);
 			this.map.setMapTypeId('s4s');
 			
-			var checkin = new google.maps.Marker({
+			/* var checkin = new google.maps.Marker({
 				position: this.latlng,
 				map: this.map,
 				icon: null // this.marker_icon
-      });
+      }); */
+      
+      this.infowindow = new google.maps.InfoWindow();
 
 		}
 		
 	},
 	
-	goToCheckin: function (coords) {
+	goToCheckin: function (coords, venue) {
 	  latlng = new google.maps.LatLng(coords.lat, coords.lng);
-	  new google.maps.Marker({ position: latlng, map: this.map });
+	  // new google.maps.Marker({ position: latlng, map: this.map });
+	  this.infowindow.setContent(venue);
+	  this.infowindow.setPosition(latlng);
+	  this.infowindow.open(this.map);
 	  this.map.panTo(latlng);
 	}
 	
