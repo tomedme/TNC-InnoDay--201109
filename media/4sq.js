@@ -7,6 +7,7 @@ var foursq = {
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
   climit: 250,
   cmax: 15,
+  frequency: 2000,
 
   atoken: null,
 
@@ -15,6 +16,8 @@ var foursq = {
 
   timer: null,
   current: 0,
+
+  category: Array(),
 
   init: function () {
     if (this.haveAccessToken()) { // got access token?
@@ -53,7 +56,7 @@ var foursq = {
   },
 
   run: function () {
-    this.timer = setInterval(function() { foursq.next(); }, 2500); // 00
+    this.timer = setInterval(function() { foursq.next(); }, this.frequency); // 00
   },
 
   next: function () {
@@ -66,9 +69,79 @@ var foursq = {
 
   seek: function (i) {
     checkin = this.checkins.items[i];
-    // console.log(checkin.venue.name);
     if (checkin && checkin.venue) gmap.goToCheckin(checkin.venue.location, checkin.venue.name);
+
+    // Some venue have disapeared ("type": "venueless")
+    if (checkin && checkin.venue && checkin.venue.type!='venueless' && checkin.venue.categories[0]) {
+      var categoryId        = String(checkin.venue.categories[0].id);
+      var categoryName      = checkin.venue.categories[0].name;
+      var categoryIcon      = checkin.venue.categories[0].icon;
+      if(typeof(this.category['count']) == 'undefined')
+        this.category['count'] = Array();
+      if(typeof(this.category['count'][categoryId]) == 'undefined')
+        this.category['count'][categoryId] = 0;
+      if(typeof(this.category['count']['global']) == 'undefined')
+        this.category['count']['global'] = 0;
+
+      this.category['count'][categoryId]++;
+      this.category['count']['global']++;
+
+      categoryIcon = categoryIcon ? '  <image x="50%" y="25%" width="32" height="32" xlink:href="'+ categoryIcon +'" transform="translate(-16, -16)" />' : '';
+//      categoryName = categoryName ? '  <text x="50%" y="25%" dx="5" dy="15" font-size="12" text-align="center">'+ categoryName +'</text>' : '';
+      categoryName = categoryName;
+
+      if(!document.getElementById('_'+ categoryId)) {
+        var categoryColor = ''+ ((Math.floor(Math.random()*15)).toString(16)) + ((Math.floor(Math.random()*15)).toString(16)) + ((Math.floor(Math.random()*15)).toString(16));
+        // create the <svg> element for each category
+        $('#container').append(''
+          + '<svg id="_'+ categoryId +'" class="category">'
+          + '  <rect x="0" y="50%" width="100%" height="50%" fill="#'+ categoryColor +'" />'
+          + '  <line class="marker" x1="50%" y1="75%" x2="50%" y2="25%" marker-start="url(#anchorToBoxMiddle)" />'
+          + categoryIcon
+          + categoryName
+          + '</svg>');
+      }
+      this.resizeCategories(this.category['count']);
+//      alert(checkin.venue.id);
+    }
+
     this.current--;
+  },
+
+  resizeCategories: function(counters) {
+    var categories  = $('.category');
+    var catLength   = categories.length;
+    var percent, previousCategoryWidth, previousCategoryX, relativeX;
+
+    for(var i = 0 ; i < categories.length ; i++) {
+      id      = String($(categories[i]).attr('id').replace('_',''));
+      percent = 100 * counters[id]/counters['global'];
+      $(categories[i]).attr('width', percent +"%");
+
+      console.log($(categories[i]).width());
+
+      if($(categories[i]).width < 32) {
+
+      }
+
+      previousCategoryWidth = i == 0 ? 0 : $(categories[i]).prev().attr('width').replace('%','');
+      previousCategoryX     = i == 0 ? 0 : $(categories[i]).prev().attr('x').replace('%','');
+      relativeX             = typeof(previousCategoryWidth) != 'undefined' ? Number(previousCategoryWidth) + Number(previousCategoryX) : 0;
+
+      $(categories[i]).attr('x', relativeX +"%");
+/*
+      console.log(''
+        +'\n id: '+ id
+        +'\n catLength: '+ catLength
+        +'\n counters[id]: '+ counters[id]
+        +'\n counters["global"]: '+ counters['global']
+        +'\n percent: '+ percent
+        +'\n previousCategoryWidth: '+ previousCategoryWidth
+        +'\n previousCategoryX: '+ previousCategoryX
+        +'\n relativeX: '+ relativeX
+        );
+*/
+    }
   }
 
 };

@@ -2,9 +2,7 @@
   fill: none;
   opacity: .9;
 }
-  #category-bars,
-  #category-transportation,
-  #category-shopping {
+  .category {
     stroke: none;
   }
 
