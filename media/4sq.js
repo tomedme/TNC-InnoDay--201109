@@ -5,11 +5,14 @@ var foursq = {
   auth_url: 'https://foursquare.com/oauth2/authenticate',
   redir_url: 'http://' + foursq_redir_url,
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
+  climit: 250,
 
   atoken: null,
 
   user: false,
   checkins: false,
+  
+  current: 0,
 
   init: function () {
     if (this.haveAccessToken()) { // got access token?
@@ -36,7 +39,7 @@ var foursq = {
     $.ajaxSetup({ async: false, dataType: 'json' });
     $.get(this.endpoint_url + '?oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
-    $.get(this.endpoint_url + '/checkins?limit=250&oauth_token=' + this.atoken, null,
+    $.get(this.endpoint_url + '/checkins?limit=' + this.climit + '&oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; }});
     return (self.user && self.checkins);
   },
@@ -46,6 +49,24 @@ var foursq = {
   },
 
   run: function () {
+    setInterval(function() { foursq.next(); }, 3000); // 00
+  },
+  
+  next: function () {
+    if (this.current - 1 < 0) {
+      this.current = 150; // this.checkins.count; console.log(this.current);
+    }
+    this.seek(this.current - 1);
+  },
+  
+  seek: function (i) {
+    checkin = this.checkins.items[i];
+    
+    // console.log(checkin.venue.location);
+    gmap.goToCheckin(checkin.venue.location);
+    
+    
+    this.current--;
   }
 
 };

@@ -20,22 +20,22 @@ var gmap = {
 		
 		if ('object' == typeof google.maps && $('#'+ this.map_dom_id).length) {
 			
-			/* var witMapStyle = [ { featureType: 'all', elementType: 'all', stylers: [ { lightness: 50 }, { saturation: -100 } ] }, 
-													{ featureType: 'all', elementType: 'labels', stylers: [ { gamma: 0.1 }, { lightness: -5 } ] },
-													// { featureType: 'water', elementType: 'geometry', stylers: [ { hue: '#007fff' }, { saturation: 0 } ] }, 
-													{ featureType: 'road', elementType: 'all', stylers: [ { visibility: 'simplified' } ] }, 
-													{ featureType: 'landscape', elementType: 'all', stylers: [ { visibility: 'off' } ] }, 
-													{ featureType: 'poi', elementType: 'all', stylers: [ { visibility: 'off' } ] }, 
-													{ featureType: 'transit', elementType: 'all', stylers: [ { visibility: 'off' } ] }, 
-													{ featureType: 'road', elementType: 'labels', stylers: [ { visibility: 'off' } ] } ];
-			var witStyledMapType = new google.maps.StyledMapType(witMapStyle, {}); */
+			var s4sMapStyle = [
+			  { featureType: 'road', elementType: 'labels', stylers: [ { visibility: 'off' } ] },
+			  { featureType: 'landscape', stylers: [ { visibility: 'off' } ] },
+			  { featureType: 'poi', stylers: [ { visibility: 'off' } ] },
+			  { featureType: 'road.local', stylers: [ { visibility: 'off' } ] },
+			  { featureType: 'road.arterial', stylers: [ { visibility: 'off' } ] },
+			  { featureType: 'administrative', stylers: [ { visibility: 'on' } ] }
+			];
+			var s4sStyledMapType = new google.maps.StyledMapType(s4sMapStyle, {});
 			
 			this.latlng = new google.maps.LatLng(this.lat, this.lng);
 			var mapOpts = {
 				zoom: this.zoom,
 				center: this.latlng,
 				backgroundColor: 'white',
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				// mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
 				navigationControlOptions: {
 					style: google.maps.NavigationControlStyle.ZOOM_PAN,
@@ -44,8 +44,8 @@ var gmap = {
 			};
 			
 			this.map = new google.maps.Map(document.getElementById(this.map_dom_id), mapOpts);
-			// this.map.mapTypes.set('wit', witStyledMapType);
-			// this.map.setMapTypeId('wit');
+			this.map.mapTypes.set('s4s', s4sStyledMapType);
+			this.map.setMapTypeId('s4s');
 			
 			var checkin = new google.maps.Marker({
 				position: this.latlng,
@@ -58,7 +58,9 @@ var gmap = {
 	},
 	
 	goToCheckin: function (coords) {
-	  
+	  latlng = new google.maps.LatLng(coords.lat, coords.lng);
+	  new google.maps.Marker({ position: latlng, map: this.map });
+	  this.map.panTo(latlng);
 	}
 	
 };

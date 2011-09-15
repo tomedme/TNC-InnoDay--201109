@@ -18,6 +18,7 @@
   var foursq_redir_url = '<?php
     echo $_SERVER['HTTP_HOST'];
     if ('fabien.tnc.lab' == $_SERVER['HTTP_HOST']) echo '/innovation_day/20110914-4square';
+    if ('4sq.tedme.kaufmich.lab' == $_SERVER['HTTP_HOST']) echo '/index.php';
   ?>';</script>
   <script type="text/javascript" src="media/4sq.js"></script>
   <script type="text/javascript" src="media/app.js"></script>
@@ -55,25 +56,28 @@
       </marker>
     </defs>
 
-    <g id="container" fill="#ddd" stroke="#000" onclick="changeWidth(evt)">
-      <svg id="category-bars" x="0" y="0" width="75%" height="100%">
-        <rect x="0" y="50%" width="100%" height="50%" fill="#500" />
-        <line class="marker" x1="50%" y1="75%" x2="50%" y2="25%" marker-start="url(#anchorToBoxMiddle)" marker-end="url(#bar)" />
-        <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="32px" />
-        <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="75%" />
-      </svg>
-      <svg id="category-transportation" x="75%" y="0" width="10%" height="100%">
-        <rect x="0" y="50%" width="100%" height="50%" fill="#a00" />
-        <line class="marker" x1="50%" y1="75%" x2="50%" y2="25%" marker-start="url(#anchorToBoxMiddle)" marker-end="url(#pool)" />
-        <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="32px" />
-        <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="10%" />
-      </svg>
-      <svg id="category-shopping" x="85%" y="0" width="15%" height="100%">
-        <rect x="0" y="50%" width="100%" height="50%" fill="#f00" />
-        <line class="marker" x1="50%" y1="75%" x2="50%" y2="25%" marker-start="url(#anchorToBoxMiddle)" marker-end="url(#airport)" />
-        <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="32px" />
-        <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="15%" />
-      </svg>
+    <g id="container" fill="#ddd" stroke="#000" onclick="changeWidth(evt)" transform="translate(0,60)">
+      <g id="category-bars">
+        <rect width="75%" height="50%" x="0" y="0" fill="#500">
+          <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="5%" />
+          <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="75%" />
+        </rect>
+        <line class="marker" x1="37.5%" y1="25%" x2="37.5%" y2="-25%" marker-start="url(#anchorToBoxMiddle)" marker-end="url(#bar)" />
+      </g>
+      <g id="category-transportation">
+        <rect x="75%" y="0" width="10%" height="50%" fill="#a00">
+          <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="1%" />
+          <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="10%" />
+        </rect>
+        <line class="marker" x1="80%" y1="25%" x2="80%" y2="-25%" marker-start="url(#anchorToBoxMiddle)" marker-end="url(#pool)" />
+      </g>
+      <g id="category-shopping">
+        <rect x="85%" y="0" width="15%" height="50%" fill="#f00">
+          <animate attributeName="width" attributeType="XML" begin="mouseover" dur="0.25s" fill="freeze" to="1%" />
+          <animate attributeName="width" attributeType="XML" begin="mouseout" dur="0.25s" fill="freeze" to="15%" />
+        </rect>
+        <line class="marker" x1="92.5%" y1="25%" x2="92.5%" y2="-25%" marker-start="url(#anchorToBoxMiddle)" marker-end="url(#airport)" />
+      </g>
     </g>
   </svg>
 
