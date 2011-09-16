@@ -13,7 +13,7 @@ var foursq = {
 
   user: false,
   checkins: false,
-  
+
   timer: null,
   speed: 2500,
   current: 0,
@@ -46,7 +46,7 @@ var foursq = {
     $.get(this.endpoint_url + '?oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
     $.get(this.endpoint_url + '/checkins?limit=' + this.climit + '&oauth_token=' + this.atoken, null,
-      function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.count }});
+      function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.items.length; }});
     return (self.user && self.checkins);
   },
 
@@ -59,7 +59,7 @@ var foursq = {
   run: function () {
     this.timer = setInterval(function() { foursq.next(); }, this.frequency); // 00
   },
-  
+
   next: function () {
     if (this.current - 1 < 0) {
       // this.current = this.cmax; // this.checkins.count; console.log(this.current);
@@ -67,7 +67,7 @@ var foursq = {
     }
     this.seek(this.current - 1);
   },
-  
+
   seek: function (i) {
     checkin = this.checkins.items[i];
     console.log(checkin);
@@ -88,7 +88,7 @@ var foursq = {
       this.category['count'][categoryId]++;
       this.category['count']['global']++;
 
-      categoryIcon = categoryIcon ? '  <image x="50%" y="25%" width="32" height="32" xlink:href="'+ categoryIcon +'" transform="translate(-16, -16)" />' : '';
+      categoryIcon = categoryIcon ? '  <image x="50%" y="75%" width="32" height="32" xlink:href="'+ categoryIcon +'" transform="translate(-16, -16)" />' : '';
 //      categoryName = categoryName ? '  <text x="50%" y="25%" dx="5" dy="15" font-size="12" text-align="center">'+ categoryName +'</text>' : '';
       categoryName = categoryName;
 
@@ -97,8 +97,8 @@ var foursq = {
         // create the <svg> element for each category
         $('#container').append(''
           + '<svg id="_'+ categoryId +'" class="category">'
-          + '  <rect x="0" y="50%" width="100%" height="50%" fill="#'+ categoryColor +'" />'
-          + '  <line class="marker" x1="50%" y1="75%" x2="50%" y2="25%" marker-start="url(#anchorToBoxMiddle)" />'
+          + '  <rect x="0" y="0" width="100%" height="50%" fill="#'+ categoryColor +'" />'
+          + '  <line class="marker" x1="50%" y1="25%" x2="50%" y2="75%" marker-start="url(#anchorToBoxMiddle)" />'
           + categoryIcon
           + categoryName
           + '</svg>');
