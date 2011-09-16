@@ -64,7 +64,7 @@ var gmap = {
 		
 	},
 	
-	goToCheckin: function (coords, venue) {
+	goToCheckin: function (coords, venue, date, category) {
 	  latlng = new google.maps.LatLng(coords.lat, coords.lng);
 	  // new google.maps.Marker({ position: latlng, map: this.map });
 	  this.infowindow.setContent(venue);

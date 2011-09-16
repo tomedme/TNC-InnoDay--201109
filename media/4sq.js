@@ -70,8 +70,8 @@ var foursq = {
   
   seek: function (i) {
     checkin = this.checkins.items[i];
-    // console.log(checkin.venue.name);
-    if (checkin && checkin.venue) gmap.goToCheckin(checkin.venue.location, checkin.venue.name);
+    console.log(checkin);
+    if (checkin && checkin.venue) gmap.goToCheckin(checkin.venue.location, checkin.venue.name, '2011-09-01', checkin.venue.categories[0].name);
 
     // Some venue have disapeared ("type": "venueless")
     if (checkin && checkin.venue && checkin.venue.type!='venueless' && checkin.venue.categories[0]) {
