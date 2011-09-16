@@ -23,6 +23,9 @@
     if ('4sq.tedme.kaufmich.lab' == $_SERVER['HTTP_HOST']) echo '/index.php';
   ?>';</script>
   <script type="text/javascript" src="media/4sq.js"></script>
+  <?php if (array_key_exists('last', $_GET)) : ?>
+  <script type="text/javascript">var cmax_or = <?php echo (int) $_GET['last'] > 0 ? (int) $_GET['last'] : '-1' ; ?>;</script>
+  <?php endif; ?>
   <script type="text/javascript" src="media/app.js"></script>
 </head>
 

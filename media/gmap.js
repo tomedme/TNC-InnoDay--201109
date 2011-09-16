@@ -38,7 +38,7 @@ var gmap = {
 				zoom: this.zoom,
 				center: this.latlng,
 				backgroundColor: 'white',
-				// mapTypeId: google.maps.MapTypeId.ROADMAP,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
 				mapTypeControl: false,
 				navigationControlOptions: {
 					style: google.maps.NavigationControlStyle.ZOOM_PAN,
@@ -48,7 +48,7 @@ var gmap = {
 			
 			this.map = new google.maps.Map(document.getElementById(this.map_dom_id), mapOpts);
 			this.map.mapTypes.set('s4s', s4sStyledMapType);
-			this.map.setMapTypeId('s4s');
+			// this.map.setMapTypeId('s4s');
 			
 			/* var checkin = new google.maps.Marker({
 				position: this.latlng,
@@ -64,10 +64,12 @@ var gmap = {
 		
 	},
 	
-	goToCheckin: function (coords, venue) {
+	goToCheckin: function (coords, venue, date, category) {
 	  latlng = new google.maps.LatLng(coords.lat, coords.lng);
 	  // new google.maps.Marker({ position: latlng, map: this.map });
-	  this.infowindow.setContent(venue);
+	  var iw = '<div style="font-style: normal; text-align: center; width: 350px;"><strong>' + venue + '</strong></br>' + category + '</br>' + date + '</div>';
+	  
+	  this.infowindow.setContent(iw);
 	  this.infowindow.setPosition(latlng);
 	  this.infowindow.open(this.map);
 	  this.map.panTo(latlng);
