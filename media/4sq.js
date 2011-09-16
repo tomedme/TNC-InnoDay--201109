@@ -80,8 +80,8 @@ var foursq = {
 
     // Some venue have disapeared ("type": "venueless")
     if (checkin && checkin.venue && checkin.venue.type!='venueless' && checkin.venue.categories[0]) {
-      var categoryId        = String(checkin.venue.categories[0].id);
-      var categoryName      = checkin.venue.categories[0].name;
+      var categoryId        = String(checkin.venue.categories[0].parents).replace(/[^a-z0-9]/gi, '');
+      var categoryName      = checkin.venue.categories[0].parents;
       var categoryIcon      = checkin.venue.categories[0].icon;
       if(typeof(this.category['count']) == 'undefined')
         this.category['count'] = Array();
@@ -109,7 +109,6 @@ var foursq = {
           + '</svg>');
       }
       this.resizeCategories(this.category['count']);
-//      alert(checkin.venue.id);
     }
 
     this.current--;
