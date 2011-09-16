@@ -6,14 +6,15 @@ var foursq = {
   redir_url: 'http://' + foursq_redir_url,
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
   climit: 250,
-  cmax: 15,
+  cmax: 10,
 
   atoken: null,
 
   user: false,
   checkins: false,
-
+  
   timer: null,
+  speed: 2500,
   current: 0,
 
   init: function () {
@@ -42,7 +43,7 @@ var foursq = {
     $.get(this.endpoint_url + '?oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
     $.get(this.endpoint_url + '/checkins?limit=' + this.climit + '&oauth_token=' + this.atoken, null,
-      function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.items.length; }});
+      function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.count }});
     return (self.user && self.checkins);
   },
 
@@ -53,9 +54,9 @@ var foursq = {
   },
 
   run: function () {
-    this.timer = setInterval(function() { foursq.next(); }, 1500); // 00
+    this.timer = setInterval(function() { foursq.next(); }, foursq.speed);
   },
-
+  
   next: function () {
     if (this.current - 1 < 0) {
       // this.current = this.cmax; // this.checkins.count; console.log(this.current);
@@ -63,11 +64,11 @@ var foursq = {
     }
     this.seek(this.current - 1);
   },
-
+  
   seek: function (i) {
     checkin = this.checkins.items[i];
     // console.log(checkin.venue.name);
-    if (checkin && checkin.venue) gmap.goToCheckin(checkin.venue.location, checkin.venue.name);
+    if (checkin) gmap.goToCheckin(checkin.venue.location, checkin.venue.name);
     this.current--;
   }
 
