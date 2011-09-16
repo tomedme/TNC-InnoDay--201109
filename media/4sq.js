@@ -7,7 +7,7 @@ var foursq = {
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
   climit: 250,
   cmax: 15,
-  frequency: 2500,
+  frequency: 3000,
 
   atoken: null,
 
@@ -47,6 +47,7 @@ var foursq = {
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
     $.get(this.endpoint_url + '/checkins?limit=' + this.climit + '&oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.items.length; }});
+    if ('undefined' != typeof cmax_or && cmax_or > -1) self.cmax = cmax_or;
     return (self.user && self.checkins);
   },
 
@@ -70,8 +71,12 @@ var foursq = {
 
   seek: function (i) {
     checkin = this.checkins.items[i];
-    console.log(checkin);
-    if (checkin && checkin.venue) gmap.goToCheckin(checkin.venue.location, checkin.venue.name, '2011-09-01', checkin.venue.categories[0].name);
+    // console.log(checkin);
+    if (checkin && checkin.venue) {
+      var checkindate = new Date(checkin.createdAt * 1000);
+      var categoryname = (checkin.venue && checkin.venue.type != 'venueless' && checkin.venue.categories[0]) ? checkin.venue.categories[0].name : '';
+      gmap.goToCheckin(checkin.venue.location, checkin.venue.name, checkindate.toLocaleDateString(), categoryname);
+    }
 
     // Some venue have disapeared ("type": "venueless")
     if (checkin && checkin.venue && checkin.venue.type!='venueless' && checkin.venue.categories[0]) {
