@@ -12,11 +12,13 @@
 
   <script type="text/javascript" src="media/gmap.js"></script>
   <script type="text/javascript">var foursq_client_id = '<?php
+    if ('flea.arkhi.org' == $_SERVER['HTTP_HOST']) echo 'LX2SNS334STJC5U4JSC4KKJE340NODQ5RCGDHC4YM2S13GOP';
     if ('fabien.tnc.lab' == $_SERVER['HTTP_HOST']) echo 'A4GUAUX0GIE5S5WH1AZJX3MQLSSGUVW2OUYB5CHDRNYOA4NG';
     if ('4sq.tedme.kaufmich.lab' == $_SERVER['HTTP_HOST']) echo 'DJESXBRMCPFMPFXWQVPMXSWHZNNC33KIOWLOMIWN4LDXJCU4';
   ?>';
   var foursq_redir_url = '<?php
     echo $_SERVER['HTTP_HOST'];
+    if ('flea.arkhi.org' == $_SERVER['HTTP_HOST']) echo '/';
     if ('fabien.tnc.lab' == $_SERVER['HTTP_HOST']) echo '/innovation_day/20110914-4square';
     if ('4sq.tedme.kaufmich.lab' == $_SERVER['HTTP_HOST']) echo '/index.php';
   ?>';</script>
