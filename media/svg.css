@@ -5,6 +5,9 @@
   .category {
     stroke: none;
   }
+    .category rect {
+      height: 100%;
+    }
 
   .marker {
     stroke: #000;

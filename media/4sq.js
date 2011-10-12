@@ -69,6 +69,19 @@ var foursq = {
     this.seek(this.current - 1);
   },
 
+  /*
+   * Allow easier creation of SVG elements in the DOM
+   * thanks to Andrew Clover for
+   * http://stackoverflow.com/questions/3642035/jquerys-append-not-working-with-svg-element/3642265#3642265
+   *
+   */
+  makeSVG: function (tag, attrs) {
+    var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (var k in attrs)
+        el.setAttribute(k, attrs[k]);
+    return el;
+  },
+
   seek: function (i) {
     checkin = this.checkins.items[i];
     // console.log(checkin);
@@ -82,7 +95,8 @@ var foursq = {
     if (checkin && checkin.venue && checkin.venue.type!='venueless' && checkin.venue.categories[0]) {
       var categoryId        = String(checkin.venue.categories[0].parents).replace(/[^a-z0-9]/gi, '');
       var categoryName      = checkin.venue.categories[0].parents;
-      var categoryIcon      = checkin.venue.categories[0].icon;
+      var categoryIconUrl   = checkin.venue.categories[0].icon;
+
       if(typeof(this.category['count']) == 'undefined')
         this.category['count'] = Array();
       if(typeof(this.category['count'][categoryId]) == 'undefined')
@@ -93,20 +107,57 @@ var foursq = {
       this.category['count'][categoryId]++;
       this.category['count']['global']++;
 
-      categoryIcon = categoryIcon ? '  <image x="50%" y="75%" width="32" height="32" xlink:href="'+ categoryIcon +'" transform="translate(-16, -16)" />' : '';
-//      categoryName = categoryName ? '  <text x="50%" y="25%" dx="5" dy="15" font-size="12" text-align="center">'+ categoryName +'</text>' : '';
-      categoryName = categoryName;
-
       if(!document.getElementById('_'+ categoryId)) {
         var categoryColor = ''+ ((Math.floor(Math.random()*15)).toString(16)) + ((Math.floor(Math.random()*15)).toString(16)) + ((Math.floor(Math.random()*15)).toString(16));
-        // create the <svg> element for each category
-        $('#container').append(''
-          + '<svg id="_'+ categoryId +'" class="category">'
-          + '  <rect x="0" y="0" width="100%" height="50%" fill="#'+ categoryColor +'" />'
-          + '  <line class="marker" x1="50%" y1="25%" x2="50%" y2="75%" marker-start="url(#anchorToBoxMiddle)" />'
-          + categoryIcon
-          + categoryName
-          + '</svg>');
+        // create elements for each category
+        var catGroup = this.makeSVG('g', {
+          'id'      : '_'+ categoryId,
+          'class'   : 'category'
+        });
+        var catRect = this.makeSVG('rect', {
+          'x'       : 0,
+          'y'       : 0,
+          'width'   : '100%',
+          'height'  : '50%',
+          'fill'    : '#'+ categoryColor
+        });
+        var catLine = this.makeSVG('line', {
+          'x1'            : '50%',
+          'y1'            : '25%',
+          'x2'            : '50%',
+          'y2'            : '75%',
+          'marker-start'  : 'url(#anchorToBoxMiddle)',
+          'class'         : 'marker'
+        });
+
+        catGroup.appendChild(catRect);
+        catGroup.appendChild(catLine);
+
+        if (categoryIconUrl) {
+          var categoryIcon = this.makeSVG('image', {
+            'x'           : '50%',
+            'y'           : '75%',
+            'width'       : 32,
+            'height'      : 32,
+            'transform'   : 'translate(-16, -16)'
+          });
+          categoryIcon.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", categoryIconUrl);
+          catGroup.appendChild(categoryIcon);
+        }
+
+        if (categoryName) {
+          var categoryName = this.makeSVG('text', {
+            'x'           : '50%',
+            'y'           : '25%',
+            'width'       : 5,
+            'height'      : 15,
+            'font-size'   : 12,
+            'text-align'  : 'center'
+          });
+          catGroup.appendChild(categoryName);
+        }
+
+        document.getElementById('container').appendChild(catGroup);
       }
       this.resizeCategories(this.category['count']);
     }
@@ -120,9 +171,14 @@ var foursq = {
     var percent, previousCategoryWidth, previousCategoryX, relativeX;
 
     for(var i = 0 ; i < categories.length ; i++) {
-      id      = String($(categories[i]).attr('id').replace('_',''));
-      percent = 100 * counters[id]/counters['global'];
-      $(categories[i]).attr('width', percent +"%");
+      var id      = String($(categories[i]).attr('id').replace('_',''));
+      var percent = 100 * counters[id]/counters['global'];
+      var rect    = $(categories[i]).children('rect')[0];
+      var line    = $(categories[i]).children('line')[0];
+      var image   = $(categories[i]).children('image')[0];
+
+      // set the size of the actual category based on the new checkin
+      rect.setAttribute('width', percent +"%");
 
       // remove the label if it doesn't fit anymore
       if(categories[i].getBBox().width <= 32) {
@@ -130,11 +186,17 @@ var foursq = {
       }
       else $(categories[i]).children('line, image').attr('opacity', 1);
 
-      previousCategoryWidth = i == 0 ? 0 : $(categories[i]).prev().attr('width').replace('%','');
-      previousCategoryX     = i == 0 ? 0 : $(categories[i]).prev().attr('x').replace('%','');
+      // calculate dimensions based on the new checkin
+      previousCategoryWidth = i == 0 ? 0 : $(categories[i]).prev().children('rect').attr('width').replace('%','');
+      previousCategoryX     = i == 0 ? 0 : $(categories[i]).prev().children('rect').attr('x').replace('%','');
       relativeX             = typeof(previousCategoryWidth) != 'undefined' ? Number(previousCategoryWidth) + Number(previousCategoryX) : 0;
+      relativeMiddleX       = relativeX + percent/2;
 
-      $(categories[i]).attr('x', relativeX +"%");
+      // update dimension and position based on the new checkin
+      rect.setAttribute('x', relativeX +"%");
+      line.setAttribute('x1', relativeMiddleX +"%");
+      line.setAttribute('x2', relativeMiddleX +"%");
+      image.setAttribute('x', relativeMiddleX +"%");
 /*
       console.log(''
         +'\n id: '+ id
@@ -149,5 +211,4 @@ var foursq = {
 */
     }
   }
-
 };

@@ -1,7 +1,5 @@
 
-$(window).ready(function () {
-  
-  // do stuff
+$(document).ready(function () {
   if (foursq.init()) {
     gmap.init(foursq.getFirstCheckin());
 
@@ -9,7 +7,6 @@ $(window).ready(function () {
     foursq.run();
   }
   else {
-    alert('Couldn\'t load data...');
+    if (console) console.log('Couldn\'t load data...');
   }
-
 });
