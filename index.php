@@ -35,8 +35,8 @@
   </section>
 
   <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>playing with SVG</title>
-    <desc>Just playing around</desc>
+    <title>Your places</title>
+    <desc>A chart displaying percentage of the different categories of venues you checked in</desc>
 
     <defs>
       <!-- filters -->
@@ -50,16 +50,7 @@
       </marker>
     </defs>
 
-    <g id="container" fill="#ddd" stroke="#000">
-<!--         <image x="30%" y="75%" width="32" height="32" xlink:href="https://foursquare.com/img/categories/travel/subway.png" transform="translate(-16, -16)" /> -->
-      <!-- <g id="_categoryId" class="category">
-        <rect x="0" y="0" width="60%" height="300px" fill="#069" />
-        <line class="marker" x1="30%" y1="25%" x2="30%" y2="75%" marker-start="url(#anchorToBoxMiddle)" />
-        <image x="30%" y="75%" width="32" height="32" xlink:href="https://foursquare.com/img/categories/travel/subway.png" transform="translate(-16, -16)" />
-        <text x="30%" y="25%" dx="5" dy="15" font-size="12" text-align="center">
-      </g> -->
-      <!-- <rect x="0" y="0" width="300px" height="100px" fill="#000" /> -->
-    </g>
+    <g id="container" fill="#ddd" stroke="#000" />
   </svg>
 </body>
 </html>

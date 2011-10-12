@@ -5,17 +5,18 @@ var foursq = {
   auth_url: 'https://foursquare.com/oauth2/authenticate',
   redir_url: 'http://' + foursq_redir_url,
   endpoint_url: 'https://api.foursquare.com/v2/users/self',
+  venues_url: 'https://api.foursquare.com/v2/venues',
   climit: 250,
   cmax: 15,
-  frequency: 3000,
+  frequency: 2000,
 
   atoken: null,
 
   user: false,
   checkins: false,
+  categories: false,
 
   timer: null,
-  speed: 2500,
   current: 0,
 
   category: Array(),
@@ -47,8 +48,10 @@ var foursq = {
       function (data) { if (200 == data.meta.code) { self.user = data.response.user; } });
     $.get(this.endpoint_url + '/checkins?limit=' + this.climit + '&oauth_token=' + this.atoken, null,
       function (data) { if (200 == data.meta.code) { self.checkins = data.response.checkins; self.cmax = data.response.checkins.items.length; }});
+    $.get(this.venues_url + '//categories?oauth_token=' + this.atoken, null,
+      function (data) { if (200 == data.meta.code) { self.categories = data.response.categories; } });
     if ('undefined' != typeof cmax_or && cmax_or > -1) self.cmax = cmax_or;
-    return (self.user && self.checkins);
+    return (self.user && self.checkins && self.categories);
   },
 
   getFirstCheckin: function () {
@@ -69,6 +72,16 @@ var foursq = {
     this.seek(this.current - 1);
   },
 
+  getParentCategories: function(categoryName, property) {
+    var categoriesTree  = this.categories;
+    var numCategories   = categoriesTree.length;
+    for (var i = 0 ; i < numCategories ; i++) {
+      if (categoryName == categoriesTree[i].pluralName) {
+      return categoriesTree[i][property];
+      }
+    }
+  },
+
   /*
    * Allow easier creation of SVG elements in the DOM
    * thanks to Andrew Clover for
@@ -83,19 +96,21 @@ var foursq = {
   },
 
   seek: function (i) {
-    checkin = this.checkins.items[i];
-    // console.log(checkin);
+    var checkin = this.checkins.items[i];
+
     if (checkin && checkin.venue) {
-      var checkindate = new Date(checkin.createdAt * 1000);
-      var categoryname = (checkin.venue && checkin.venue.type != 'venueless' && checkin.venue.categories[0]) ? checkin.venue.categories[0].name : '';
+      var checkindate   = new Date(checkin.createdAt * 1000);
+      var categoryname  = (checkin.venue && checkin.venue.type != 'venueless' && checkin.venue.categories[0]) ? checkin.venue.categories[0].name : '';
       gmap.goToCheckin(checkin.venue.location, checkin.venue.name, checkindate.toLocaleDateString(), categoryname);
     }
 
     // Some venue have disapeared ("type": "venueless")
     if (checkin && checkin.venue && checkin.venue.type!='venueless' && checkin.venue.categories[0]) {
-      var categoryId        = String(checkin.venue.categories[0].parents).replace(/[^a-z0-9]/gi, '');
-      var categoryName      = checkin.venue.categories[0].parents;
-      var categoryIconUrl   = checkin.venue.categories[0].icon;
+      var categoryId      = String(checkin.venue.categories[0].parents).replace(/[^a-z0-9]/gi, '');
+      var categoryName    = checkin.venue.categories[0].parents;
+      var categoryIconUrl = this.getParentCategories(categoryName, 'icon');
+
+
 
       if(typeof(this.category['count']) == 'undefined')
         this.category['count'] = Array();
@@ -109,7 +124,8 @@ var foursq = {
 
       if(!document.getElementById('_'+ categoryId)) {
         var categoryColor = ''+ ((Math.floor(Math.random()*15)).toString(16)) + ((Math.floor(Math.random()*15)).toString(16)) + ((Math.floor(Math.random()*15)).toString(16));
-        // create elements for each category
+        // create SVG elements for each category
+        // needed because SVG DOM is different from HTML DOM
         var catGroup = this.makeSVG('g', {
           'id'      : '_'+ categoryId,
           'class'   : 'category'
@@ -146,15 +162,15 @@ var foursq = {
         }
 
         if (categoryName) {
-          var categoryName = this.makeSVG('text', {
+          var categoryNameTag = this.makeSVG('text', {
             'x'           : '50%',
-            'y'           : '25%',
-            'width'       : 5,
-            'height'      : 15,
+            'y'           : '15%',
             'font-size'   : 12,
-            'text-align'  : 'center'
+            'text-align'  : 'center',
+            'text-anchor' : 'middle'
           });
-          catGroup.appendChild(categoryName);
+          categoryNameTag.textContent = categoryName;
+          catGroup.appendChild(categoryNameTag);
         }
 
         document.getElementById('container').appendChild(catGroup);
@@ -176,15 +192,16 @@ var foursq = {
       var rect    = $(categories[i]).children('rect')[0];
       var line    = $(categories[i]).children('line')[0];
       var image   = $(categories[i]).children('image')[0];
+      var legend  = $(categories[i]).children('text')[0];
 
       // set the size of the actual category based on the new checkin
       rect.setAttribute('width', percent +"%");
 
       // remove the label if it doesn't fit anymore
-      if(categories[i].getBBox().width <= 32) {
-        $(categories[i]).children('line, image').attr('opacity', 0);
+      if(rect.getBBox().width <= 32) {
+        $(categories[i]).children('line, image, text').attr('opacity', 0);
       }
-      else $(categories[i]).children('line, image').attr('opacity', 1);
+      else $(categories[i]).children('line, image, text').attr('opacity', 1);
 
       // calculate dimensions based on the new checkin
       previousCategoryWidth = i == 0 ? 0 : $(categories[i]).prev().children('rect').attr('width').replace('%','');
@@ -196,7 +213,8 @@ var foursq = {
       rect.setAttribute('x', relativeX +"%");
       line.setAttribute('x1', relativeMiddleX +"%");
       line.setAttribute('x2', relativeMiddleX +"%");
-      image.setAttribute('x', relativeMiddleX +"%");
+      legend.setAttribute('x', relativeMiddleX +"%");
+      if(image) image.setAttribute('x', relativeMiddleX +"%");
 /*
       console.log(''
         +'\n id: '+ id
